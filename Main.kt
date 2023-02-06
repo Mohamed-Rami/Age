@@ -1,75 +1,56 @@
-import java.util.Calendar
+import java.util.Calendar;
+
 fun main() {
-    println("Hello My Name is Mohamed Rami What about You What's Your Name ?")
-    print("My Name is : ")
-    val name = readLine()!!.toString()
-    print("Do u Want To Calculate Your Age Or My Age ? (Answer 1 = Your Age | Answer 2 = My Age) ( Enter 1 Or 2) : ")
-    val jawab = readLine()!!.toString()
-    if (jawab.isNotEmpty()){
-        if (jawab == "1"){
-            print("Ok Then Soo $name Please enter Your Birth Year : ")
-            val Birth_year:Int = readLine()!!.toInt()
-            val year = Calendar.getInstance().get(Calendar.YEAR)
-            val birth = year - Birth_year
-            println("Your Age is $birth")
-        }
-        if (jawab == "2"){
-            if (name.isNotEmpty()){
-                print("Nice to meet you $name Iam Happy With You Can Help Me To calculate My Age ? (Yes Or No) : ")
-                val reponse = readLine()!!.toString()
-                if (reponse == "Yes" || reponse == "yes"){
-                    print("My Birth Year Is 2003 Can U Find My Age ? (Yes Or No) : ")
-                    val answer = readLine()!!.toString()
-                    if (answer == "Yes" || answer == "yes" ){
-                        // Check My Age
-                        print("Soo How Old Iam ? Enter My Age Please : ")
-                        val age = readLine()!!.toInt()
-                        // This is My Real Age
-                        val year = Calendar.getInstance().get(Calendar.YEAR)
-                        val birth = year - 2003
-                        if (age == birth){
-                            println("That's Correct Thank U $name")
-                        }
-                        if (age > birth) {
-                            println("Nah Bro That's False I give u chance to try Again")
-                            main()
-                        }
-                        if (age < birth){
-                            println("Nah Bro That's False give u chance to try Again ")
-                            main()
-                        }
-                    }
-                    else
-                    {
-                        if (answer.isEmpty()){
-                            println("Please Answer Yes Or No")
-                            main()
-                        }
+    println("Hello My Name is Mohamed Rami. What about you? What's your name?");
+    print("My name is: ");
+    val name = readLine()!!.toString();
 
-                        if (answer == "No" || answer == "no"){
-                            println("That's sad :( Thank U $name")
-                        }
-
-                    }
-                }else {
-                    if (reponse.isEmpty()){
-                        println("Please Answer Yes Or No")
-                        main()
-                    }
-
-                    if (reponse == "No" || reponse == "no") {
-                        println("Ohh That's sad :( Ok Then Thank u $name")
-                    }
-                }
-            }else{
-                println(" Error !! Please Enter Your Name")
-                main()
-            }
-        }
-    }else{
-        println("Please Answer ( Enter 1 Or 2) !! ")
-        main()
+    val jawab = askUser("Do you want to calculate your age or my age? (Enter 1 for your age, 2 for my age): ");
+    if (jawab.equals("1")) {
+        calculateAge(name, "your");
+    } else if (jawab.equals("2")) {
+        calculateMyAge(name);
+    } else {
+        println("Invalid input. Please answer either 1 or 2.");
+        main();
     }
+}
 
+private fun calculateAge(name: String, ageType: String) {
+    val birthYear = askUser("Okay, $name. Please enter your birth year: ").toInt();
+    val currentYear = Calendar.getInstance().get(Calendar.YEAR);
+    val age = currentYear - birthYear;
+    println("Your age is $age");
+}
 
+private fun calculateMyAge(name: String) {
+    val response = askUser("Nice to meet you $name. Can you help me calculate my age? (yes/no): ");
+    if (response.equals("yes", ignoreCase = true)) {
+        val answer = askUser("My birth year is 2003. Can you find my age? (yes/no): ");
+        if (answer.equals("yes", ignoreCase = true)) {
+            val age = askUser("So, how old am I? Enter my age: ").toInt();
+            val currentYear = Calendar.getInstance().get(Calendar.YEAR);
+            val correctAge = currentYear - 2003;
+            if (age == correctAge) {
+                println("That's correct. Thank you, $name.");
+            } else {
+                println("Incorrect answer. Please try again.");
+                main();
+            }
+        } else {
+            println("Okay. Thank you for your time, $name.");
+        }
+    } else {
+        println("Okay. Thank you for your time, $name.");
+    }
+}
+
+private fun askUser(prompt: String): String {
+    print(prompt);
+    val answer = readLine()!!.toString();
+    if (answer.isEmpty()) {
+        println("Please enter a valid answer.");
+        return askUser(prompt);
+    }
+    return answer;
 }
